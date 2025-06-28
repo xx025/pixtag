@@ -6,7 +6,7 @@ services:
       - "9988:9989"
     volumes:
       - ./data:/app/data
-      - ./images:/app/images
+#      - ./images:/app/images
       # - /mnt:/mnt 
     environment:
       - PYTHONUNBUFFERED=1
