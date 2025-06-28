@@ -1,0 +1,14 @@
+{
+  "selectAnImage": "Please select an image",
+  "imagePath": "Image Path",
+  "actualSize": "Actual Size",
+  "currentPosition": "Current Position",
+  "load": "Load",
+  "reload": "Reload",
+  "waitLoad": "Waiting to load...",
+  "cleanAllTags": "Clean All Tags",
+  "confirmCleanAllTags": "Are you sure you want to clean all tags? This will reset all images' tags to untagged state.",
+  "cleanAllTagsSuccess": "All tags have been successfully cleaned.",
+  "inputImagePath": "Please enter the image path"
+
+}

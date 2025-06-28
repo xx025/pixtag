@@ -1,0 +1,14 @@
+{
+  "selectAnImage": "请选择一张图片",
+  "imagePath": "图片路径",
+  "actualSize": "实际宽高",
+  "currentPosition": "当前位置",
+  "load": "加载",
+  "reload": "重载",
+  "loading": "加载中...",
+  "waitLoad": "待加载..",
+  "cleanAllTags": "清除所有标签",
+  "confirmCleanAllTags": "确定要清除所有标签吗？这将重置所有图片的标签为未标状态。",
+  "cleanAllTagsSuccess": "所有标签已成功清除。",
+  "inputImagePath": "请输入图片路径"
+}
