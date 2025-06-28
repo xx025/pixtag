@@ -1,0 +1,13 @@
+services:
+  snapsort:
+    image: docker.io/library/sanpsort:latest
+    container_name: snapsort-app
+    ports:
+      - "9988:9989"
+    volumes:
+      - ./data:/app/data
+      - ./images:/app/images
+      # - /mnt:/mnt 
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped

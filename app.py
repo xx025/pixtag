@@ -8,7 +8,7 @@ from starlette.responses import FileResponse
 
 from backend.api import router as api_router
 
-host = "127.0.0.1"
+host = "0.0.0.0"
 port = 9989
 
 
