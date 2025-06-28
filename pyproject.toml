@@ -1,0 +1,13 @@
+[project]
+name = "SnapSort"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi[standard]>=0.115.13",
+    "gradio>=5.34.2",
+    "imageio>=2.37.0",
+    "itsdangerous>=2.2.0",
+    "pandas>=2.3.0",
+]
