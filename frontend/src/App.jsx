@@ -8,52 +8,43 @@ import TagControlPanel from "./components/TagControlPanel.jsx";
 import {SettingFilled} from "@ant-design/icons";
 import SettingPanel from "./components/SettingPanel.jsx";
 import {BottomLine} from "./components/BottomLine.jsx";
-import {tags} from "./components/utils.jsx";
+import {
+    defaultProjConf,
+    defaultSettingConf,
+    loadWithDefaults
+} from "./components/utils.jsx";
 import i18n from "i18next";
+
 
 const {Header, Footer, Sider, Content} = Layout;
 
 
-export default function Main() {
+export default function Main(key) {
     const [selectedImage, setSelectedImage] = useState(null);
     const [mockImageList, setMockImageList] = useState([])
     const [refreshKey, setRefreshKey] = useState(0);// 一些组件延迟渲染,用于强制刷新组件
 
+    const [showSetting, setShowSetting] = useState(false);
+
+    const [currentProjConf, setCurrentProjConf] = useState(() => {
+        return loadWithDefaults('currentProjConf', defaultProjConf);
+    })
+
+    const [settingConfig, setSettingConfig] = useState(() => {
+        return loadWithDefaults('settingConfig', defaultSettingConf)
+    });
 
     useEffect(() => {
         console.log("当前语言:", i18n.language);
     }, []);
-
-
-    const [currentProjConf, setCurrentProjConf] = useState(() => {
-        const savedConfig = localStorage.getItem('currentProjConf');
-        console.log(savedConfig)
-        if (savedConfig) {
-            return JSON.parse(savedConfig);
-        }
-        return {
-            projectId: 0,
-            location: '',
-            tags: tags
-        };
-    })
-
     useEffect(() => {
         localStorage.setItem('currentProjConf', JSON.stringify(currentProjConf));
     }, [currentProjConf]);
 
+    useEffect(() => {
+        localStorage.setItem('settingConfig', JSON.stringify(currentProjConf));
+    }, [settingConfig]);
 
-    const [settingConfig, setSettingConfig] = useState(() => {
-        const savedConfig = localStorage.getItem('settingConfig');
-        if (savedConfig) {
-            return JSON.parse(savedConfig);
-        }
-        return {
-            backendUrl: 'http://127.0.0.1:9989'
-        };
-    });
-
-    const [showSetting, setShowSetting] = useState(false);
 
     const onPrev = () => {
         if (!selectedImage) return;
@@ -80,6 +71,8 @@ export default function Main() {
                 onCancel={() => setShowSetting(false)}
                 settingConfig={settingConfig}
                 setSettingConfig={setSettingConfig}
+                currentProjConf={currentProjConf}
+                setCurrentProjConf={setCurrentProjConf}
             />
             <Header className="custom-fixed-header">
                 <Flex justify="space-between" align="center" style={{width: '100%'}}>
