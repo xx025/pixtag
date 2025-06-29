@@ -22,7 +22,6 @@ docker compose up -d
 ```
 git clone https://github.com/xx025/SnapSort.git
 cd SnapSort
-pip install uv # IF YOU HAVE UV , SKIP THIS STEP
 uv sync
 cd frontend
 yarn install
