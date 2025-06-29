@@ -1,6 +1,6 @@
 import './App.css'
 import React, {useEffect, useState} from 'react';
-import {Button, Flex, Layout, Select, Tag} from 'antd';
+import {Button, Flex, Layout} from 'antd';
 import HeaderLoad from "./components/HeaderLoad.jsx";
 import ImageListSidebar from "./components/ImageListPanel.jsx";
 import ImageViewer from "./components/ImageViewer.jsx";
@@ -24,8 +24,8 @@ export default function Main(key) {
     const [mockImageList, setMockImageList] = useState([])
     const [refreshKey, setRefreshKey] = useState(0);// 一些组件延迟渲染,用于强制刷新组件
 
-    const [showSetting, setShowSetting] = useState(false);
 
+    const [showSetting, setShowSetting] = useState(false);
     const [currentProjConf, setCurrentProjConf] = useState(() => {
         return loadWithDefaults('currentProjConf', defaultProjConf);
     })
@@ -90,10 +90,14 @@ export default function Main(key) {
                 <Sider className="custom-fixed-left">
                     <div className="image-list-sidebar-scroll">
                         <ImageListSidebar
-                            onImageSelect={setSelectedImage}
-                            mockImageList={mockImageList}
+                            setSelectedImage={setSelectedImage}
                             selectedImage={selectedImage}
+                            mockImageList={mockImageList}
+                            setMockImageList={setMockImageList}
+                            currentProjConf={currentProjConf}
                             refreshKey={refreshKey}
+                            setRefreshKey={setRefreshKey}
+
                         />
                     </div>
                 </Sider>
@@ -122,6 +126,8 @@ export default function Main(key) {
             </div>
             <Footer className="custom-fixed-footer">
                 <BottomLine
+
+                    currentProjConf={currentProjConf}
                     selectedImage={selectedImage}
                     mockImageList={mockImageList}
                     refreshKey={refreshKey}

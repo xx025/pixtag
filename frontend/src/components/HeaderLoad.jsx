@@ -4,16 +4,14 @@ import {Input, Button, Layout, Flex} from 'antd';
 import {cleanAllTags, loadImageList, OKStatus, tags} from "./utils.jsx";
 import {useTranslation} from "react-i18next";
 
-const {Header} = Layout;
 
-export default function HeaderLoad({
-                                       SetImageList,
-                                       mockImageList,
-                                       settingConfig,
-                                       currentProjConf,
-                                       setCurrentProjConf
-                                   }) {
-
+export default function HeaderLoad(
+    {
+        SetImageList,
+        settingConfig,
+        currentProjConf,
+        setCurrentProjConf
+    }) {
 
     const {t} = useTranslation();
     const [loading, setLoading] = useState(false);
@@ -78,6 +76,7 @@ export default function HeaderLoad({
                 return {
                     ...image,
                     tag: tag, // 使用完整的 tag 对象
+                    isVisible: true
                 };
             });
             console.log("加载图片列表:", result);
@@ -97,7 +96,6 @@ export default function HeaderLoad({
             alert(error)
         }).finally(
             () => {
-
                 const endTime = performance.now();
                 const duration = endTime - startTime;
                 console.log(`loadImageList 耗时: ${duration.toFixed(2)} 毫秒`);
