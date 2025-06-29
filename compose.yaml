@@ -1,6 +1,6 @@
 services:
   snapsort:
-    image: docker.io/library/sanpsort:latest
+    image: ghcr.io/xx025/snapsort:latest
     container_name: snapsort-app
     ports:
       - "9988:9989"
