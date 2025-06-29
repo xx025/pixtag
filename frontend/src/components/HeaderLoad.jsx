@@ -1,5 +1,5 @@
 // HeaderLoad.js
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Input, Button, Layout, Flex} from 'antd';
 import {cleanAllTags, loadImageList, OKStatus, tags} from "./utils.jsx";
 import {useTranslation} from "react-i18next";
@@ -52,6 +52,16 @@ export default function HeaderLoad({
     }
 
     let startTime = performance.now();
+
+    useEffect(() => {
+
+        console.log(currentProjConf.location);
+        setCurrentProjConf(prev => ({
+            ...prev,
+            location: inputValue,
+        }));
+    }, [inputValue]);
+
     const handleButtonClick = () => {
         setLoading(true);
 
