@@ -5,10 +5,16 @@
   "currentPosition": "Current Position",
   "load": "Load",
   "reload": "Reload",
-  "waitLoad": "Waiting to load...",
-  "cleanAllTags": "Clean All Tags",
-  "confirmCleanAllTags": "Are you sure you want to clean all tags? This will reset all images' tags to untagged state.",
-  "cleanAllTagsSuccess": "All tags have been successfully cleaned.",
-  "inputImagePath": "Please enter the image path"
-
+  "loading": "Loading...",
+  "waitLoad": "Waiting for loading...",
+  "cleanAllTags": "Clear All Tags",
+  "confirmCleanAllTags": "Are you sure you want to clear all tags? This will reset the tags of all images to untagged.",
+  "cleanAllTagsSuccess": "All tags have been successfully cleared.",
+  "inputImagePath": "Please enter the image path",
+  "setting": "Settings",
+  "backEndUrl": "Backend URL",
+  "currentLang": "Current Language",
+  "hotkey": "Hotkey",
+  "prevIm": "Previous Image",
+  "nextIm": "Next Image"
 }

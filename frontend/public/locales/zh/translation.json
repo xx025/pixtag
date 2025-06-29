@@ -10,5 +10,11 @@
   "cleanAllTags": "清除所有标签",
   "confirmCleanAllTags": "确定要清除所有标签吗？这将重置所有图片的标签为未标状态。",
   "cleanAllTagsSuccess": "所有标签已成功清除。",
-  "inputImagePath": "请输入图片路径"
+  "inputImagePath": "请输入图片路径",
+  "setting": "设置",
+  "backEndUrl": "后端网址",
+  "currentLang": "当前语言",
+  "hotkey":"快捷键",
+  "prevIm": "上一张",
+  "nextIm": "下一张"
 }

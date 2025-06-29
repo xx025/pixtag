@@ -9,7 +9,7 @@ i18n
     .use(initReactI18next)
     .init({
         fallbackLng: 'en',
-        debug: true,
+        debug: false,
         load: 'languageOnly', // ✅ 忽略 zh-CN，只加载 zh
         interpolation: {
             escapeValue: false

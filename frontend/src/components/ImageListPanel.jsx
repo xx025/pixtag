@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react';
-import {List, Tag, Flex, Input, Select, Space} from 'antd';
+import {List, Tag, Flex} from 'antd';
+import {hexToRgba} from "./utils.jsx";
 
 export default function ImageListSidebar({onImageSelect, mockImageList, selectedImage, refreshKey}) {
     const itemRefs = useRef({});
@@ -53,7 +54,7 @@ export default function ImageListSidebar({onImageSelect, mockImageList, selected
                                     <span style={{whiteSpace: 'normal', wordBreak: 'break-all'}}>
                                         {`${item.id}. ${item.description}`}
                                     </span>
-                                    <Tag bordered={false} color={item.tag.color} style={{fontSize: "10", marginInline:"0" ,width: "50px"}} >
+                                    <Tag bordered={false} color={  hexToRgba(item.tag.color, 0.8)} style={{fontSize: "10", marginInline:"0" ,width: "50px"}} >
                                         {item.tag.name}
                                     </Tag>
                                 </Flex>

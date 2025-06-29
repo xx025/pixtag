@@ -15,8 +15,10 @@
     "i18next": "^25.2.1",
     "i18next-browser-languagedetector": "^8.2.0",
     "i18next-http-backend": "^3.0.2",
+    "keycode": "^2.2.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-hotkeys": "^2.0.0",
     "react-i18next": "^15.5.3",
     "react-image-lightbox": "^5.1.4",
     "url-join": "^5.0.0"

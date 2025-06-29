@@ -1,5 +1,5 @@
 // HeaderLoad.js
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Input, Button, Layout, Flex} from 'antd';
 import {cleanAllTags, loadImageList, OKStatus, tags} from "./utils.jsx";
 import {useTranslation} from "react-i18next";
@@ -51,15 +51,26 @@ export default function HeaderLoad({
         )
     }
 
+    let startTime = performance.now();
+
+    useEffect(() => {
+
+        console.log(currentProjConf.location);
+        setCurrentProjConf(prev => ({
+            ...prev,
+            location: inputValue,
+        }));
+    }, [inputValue]);
 
     const handleButtonClick = () => {
         setLoading(true);
-        // 模拟加载，2秒后结束
+
         loadImageList(settingConfig.backendUrl, inputValue, tags).then(result => {
             const {images, location, message, projectId, status} = result;
             if (!OKStatus.includes(status)) {
                 alert(message)
             }
+            startTime = performance.now();
 
             // 重组 images 列表，将 tag ID 替换为完整的 tag 对象
             const imagesList = images.map(image => {
@@ -86,6 +97,10 @@ export default function HeaderLoad({
             alert(error)
         }).finally(
             () => {
+
+                const endTime = performance.now();
+                const duration = endTime - startTime;
+                console.log(`loadImageList 耗时: ${duration.toFixed(2)} 毫秒`);
                 setLoading(false); // 设置加载状态为false
                 setLoadings(true); // 设置加载完成状态
             }

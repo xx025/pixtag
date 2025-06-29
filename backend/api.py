@@ -2,6 +2,7 @@ import shutil
 import uuid
 from itertools import count
 from pathlib import Path
+from time import time
 
 from fastapi import APIRouter, Request
 from fastapi.responses import FileResponse
@@ -28,6 +29,7 @@ async def load_image(im_path):
 
 @router.post("/getImageList", response_model=ImageListResponse)
 async def get_ims_list(body: ImageListRequest, request: Request):
+    start_time = time()
     images_location = Path(body.location).resolve()
     tags = body.tags
     project_id = f"{uuid.uuid4()}".replace("-", "")
@@ -68,6 +70,10 @@ async def get_ims_list(body: ImageListRequest, request: Request):
         im.id = next(id_counter)
 
     result.images = ims
+
+    end_time = time()
+    elapsed_time = end_time - start_time
+    print(f"获取图片列表耗时: {elapsed_time:.2f} 秒")
     return result
 
 
