@@ -42,7 +42,7 @@ export default function Main(key) {
     }, [currentProjConf]);
 
     useEffect(() => {
-        localStorage.setItem('settingConfig', JSON.stringify(currentProjConf));
+        localStorage.setItem("settingConfig", JSON.stringify(settingConfig));
     }, [settingConfig]);
 
 

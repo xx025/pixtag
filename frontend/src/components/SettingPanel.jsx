@@ -18,10 +18,10 @@ export default function SettingPanel({
     const {t} = useTranslation();
 
     const setBackendUrl = (url) => {
-        console.log("Setting backend URL to:", url);
-        setSettingConfig(prevConfig => {
-            return {...prevConfig, backendUrl: url};
-        });
+        setSettingConfig(prev => ({
+            ...prev,
+            backendUrl: url
+        }));
     }
 
     const tagMap = Object.fromEntries(currentProjConf.tags.map(tag => [tag.id, tag.name]));
@@ -78,7 +78,6 @@ export default function SettingPanel({
             </Form>
 
         </Modal>
-
 
 
     );
