@@ -1,8 +1,6 @@
 import {Button, Flex} from 'antd';
 import {hexToRgba, OKStatus, tags, updateImageTag} from "./utils.jsx";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
-import {HotKeys} from "react-hotkeys";
-import {useEffect, useRef} from "react";
 
 export default function TagControlPanel(
     {
@@ -17,30 +15,9 @@ export default function TagControlPanel(
     }
 ) {
 
-    const containerRef = useRef(null);
+    // const containerRef = useRef(null);
 
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (!containerRef.current) return; // 限制边界
-            if (!containerRef.current.contains(e.target)) return;
 
-            const key = e.key;
-            const hotkeys = settingConfig.hotkeys;
-            const matchedEntry = Object.entries(hotkeys).find(([, keys]) => keys.includes(key));
-            if (!matchedEntry) return;
-            e.preventDefault(); // 阻止默认事件（比如空格滚动）
-            const [actionKey] = matchedEntry;
-            const domId = `btnId-${actionKey}`;  // 你用的 ID 命名规则
-            const btn = document.getElementById(domId);
-            if (btn) {
-                btn.click();  // 触发按钮点击
-            } else {
-                console.warn(`按钮 ${domId} 未找到`);
-            }
-        };
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [settingConfig.hotkeys]);
 
     function onTagChange(tag) {
 
@@ -72,7 +49,7 @@ export default function TagControlPanel(
     }
 
     return (
-        <Flex gap="large" align="center" justify="center" style={{padding: 8, width: "100%"}} ref={containerRef}>
+        <Flex gap="large" align="center" justify="center" style={{padding: 8, width: "100%"}}>
             <Button onClick={onPrev} disabled={!selectedImage} id="btnId-prev">
                 <LeftOutlined/> Prev
             </Button>
