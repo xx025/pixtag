@@ -1,9 +1,12 @@
 import urlJoin from "url-join";
-import keycode from "keycode";
 
+
+export const othersInfo = {
+    "key": "U808",
+    "github": "U2FsdGVkX192qJ91Cu00PUlFJzfyRpAbbWaIYWEq0UMw17lCluqlNq1GiyiArGk8",
+}
 
 export const OKStatus = [200, "200", "OK", "ok", "success", "Success", "successed"];
-
 
 export const defaultBackendUrl = 'http://127.0.0.1:9989';
 
@@ -49,11 +52,12 @@ export const readableKey = (k) => {
     };
     return keyDisplayMap?.k ? keyDisplayMap[k] : k;
 };
-export  function loadWithDefaults(key, defaults) {
+
+export function loadWithDefaults(key, defaults) {
     try {
         const stored = localStorage.getItem(key);
         const parsed = stored ? JSON.parse(stored) : {};
-        return { ...defaults, ...parsed };
+        return {...defaults, ...parsed};
     } catch (e) {
         console.warn(`无法解析 localStorage[${key}]，使用默认值`, e);
         return defaults;
@@ -131,3 +135,22 @@ export function cleanAllTags(backendUrl, projectId, tags) {
     });
 }
 
+import CryptoJS from "crypto-js";
+
+export function decryptAES(encryptedStr, key) {
+    try {
+        const bytes = CryptoJS.AES.decrypt(encryptedStr, key);
+        const originalText = bytes.toString(CryptoJS.enc.Utf8);
+        return originalText || null;  // 解密失败返回 null
+    } catch {
+        return null;
+    }
+}
+export function encryptAES(plainText, key) {
+    try {
+        const ciphertext = CryptoJS.AES.encrypt(plainText, key).toString();
+        return ciphertext;
+    } catch {
+        return null;
+    }
+}

@@ -2,7 +2,7 @@
 
 # SnapSort
 
-> Quickly sort images in a folder by dragging and dropping them into the correct order.
+> Quickly categorize images with simple hotkeys—automatic paging, real-time stats, and fast filtering for seamless workflow.
 
 ## Usage
 

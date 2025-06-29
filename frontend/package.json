@@ -12,6 +12,7 @@
   "dependencies": {
     "@ant-design/icons": "5.x",
     "antd": "^5.26.2",
+    "crypto-js": "^4.2.0",
     "i18next": "^25.2.1",
     "i18next-browser-languagedetector": "^8.2.0",
     "i18next-http-backend": "^3.0.2",
