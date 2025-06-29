@@ -12,6 +12,7 @@
 
 ```
 git clone https://github.com/xx025/SnapSort.git
+cd SnapSort
 docker compose up -d
 ```
 
