@@ -106,7 +106,7 @@ export default function HeaderLoad(
     };
 
     return (
-        <Flex gap={"large"}>
+        <Flex gap={"small"}>
             <Input
                 placeholder={t("inputImagePath")}
                 value={inputValue}
@@ -122,5 +122,6 @@ export default function HeaderLoad(
             <Button onClick={cleanAllTagsProxy}
                     disabled={loading || !SetImageList}
             > {t("cleanAllTags")}</Button>
-        </Flex>);
+        </Flex>
+    );
 }

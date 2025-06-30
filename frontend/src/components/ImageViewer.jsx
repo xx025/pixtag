@@ -2,6 +2,77 @@ import React, {useEffect, useRef, useState} from 'react';
 import 'react-image-lightbox/style.css';
 import urlJoin from "url-join";
 import {useTranslation} from "react-i18next";
+import {Flex} from "antd";
+
+
+function RotatableImage({settingConfig, imViewConfig, selectedImage}) {
+    const [displaySize, setDisplaySize] = useState({
+        width: 'auto',
+        height: '100%',
+    });
+    const containerRef = useRef(null);
+
+    const imageRef = useRef(null);
+
+    const updateImageSize = () => {
+        const img = imageRef.current;
+        if (!img) return;
+
+        const iw = img.naturalWidth;
+        const ih = img.naturalHeight;
+
+        const rotated = (imViewConfig?.rotateDeg ?? 0) % 180 !== 0;
+        const container = containerRef.current;
+        if (!container) return;
+
+        const cw = container.clientWidth;
+        const ch = container.clientHeight;
+
+        console.log(rotated,displaySize)
+        if (!rotated) {
+            if (iw / ih > cw / ch) {
+                setDisplaySize({
+                    width: '100%',
+                    height: 'auto',
+                })
+            } else {
+                setDisplaySize({
+                    width: 'auto',
+                    height: 'height',
+                })
+            }
+        } else {
+            // setDisplaySize({
+            //     width:
+            //     height:
+            // })
+        }
+
+    };
+
+    useEffect(() => {
+        updateImageSize();
+    }, [imViewConfig, selectedImage]);
+
+    return (
+        <Flex style={{height: "90%", maxHeight: "90%", width: "100%", maxWidth: "100%"}} align={"center"}
+              justify={"center"} ref={containerRef}>
+            <img
+                ref={imageRef}
+                src={urlJoin(settingConfig.backendUrl, selectedImage.url || selectedImage.path)}
+                alt={selectedImage.description || selectedImage.path}
+                onLoad={updateImageSize}
+                style={{
+                    transform: `rotate(${imViewConfig?.rotateDeg ?? 0}deg)`,
+                    transformOrigin: 'center center',
+                    transition: 'transform 0.3s ease-in-out',
+                    ...displaySize,
+                }}
+            />
+        </Flex>
+
+    );
+}
 
 
 export default function ImageViewer({
@@ -9,13 +80,13 @@ export default function ImageViewer({
                                         setSelectedImage,
                                         refreshKey,
                                         setRefreshKey,
-                                        settingConfig
+                                        settingConfig,
+                                        imViewConfig
                                     }) {
 
 
     const {t} = useTranslation();
     const [open, setOpen] = useState(false);
-    const containerRef = useRef();
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -25,7 +96,6 @@ export default function ImageViewer({
             ) {
                 return; // 避免在输入框等处触发
             }
-
             const key = e.key;
             const hotkeys = settingConfig.hotkeys;
             const matchedEntry = Object.entries(hotkeys).find(([, keys]) => keys.includes(key));
@@ -45,12 +115,12 @@ export default function ImageViewer({
     }, [settingConfig.hotkeys]);
 
 
-    const handleImageLoad = (e) => {
-        const {naturalWidth, naturalHeight} = e.target;
-        selectedImage.naturalSize = {width: naturalWidth, height: naturalHeight};
-        setSelectedImage(selectedImage);
-        setRefreshKey(refreshKey + 1); // 强制刷新组件以更新实际宽高显示
-    };
+    // const handleImageLoad = (e) => {
+    //     const {naturalWidth, naturalHeight} = e.target;
+    //     selectedImage.naturalSize = {width: naturalWidth, height: naturalHeight};
+    //     setSelectedImage(selectedImage);
+    //     setRefreshKey(refreshKey + 1); // 强制刷新组件以更新实际宽高显示
+    // };
 
     useEffect(() => {
         setOpen(false); // 在 selectedImage 改变时清除之前的图片
@@ -64,26 +134,21 @@ export default function ImageViewer({
     }
 
     return (
-        <div style={{padding: 2, textAlign: 'center', width: '100%', height: '93%'}} ref={containerRef}>
-            {open ? (
-                <img
-                    src={urlJoin(settingConfig.backendUrl, selectedImage.url || selectedImage.path)}
-                    alt={selectedImage.title}
-                    onLoad={handleImageLoad}
-                    style={{
-                        maxWidth: '100%',
-                        maxHeight: '100%',
-                        width: 'auto',
-                        height: '100%',
-                        // borderRadius: 8,
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                        cursor: 'pointer'
-                    }}
-                />
-            ) : (
-                <span style={{color: '#999', textAlign: 'center', padding: 16}}>{t("waitLoad")} {selectedImage.title}</span>
 
-            )}
-        </div>
+        open ? (
+
+            <RotatableImage
+                settingConfig={settingConfig}
+                selectedImage={selectedImage}
+                imViewConfig={imViewConfig} // 支持 0, 90, 180, 270
+            />
+
+        ) : (
+            <span style={{
+                color: '#999',
+                textAlign: 'center',
+                padding: 16
+            }}>{t("waitLoad")} {selectedImage.title}</span>
+        )
     );
 }
