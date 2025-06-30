@@ -60,7 +60,11 @@ export function BottomLine({currentProjConf, selectedImage, mockImageList, refre
                             {index !== arr.length - 1 && ' ｜ '}
                         </span>
                     ))}
-                    <a href={decryptAES(othersInfo.github, othersInfo.key)}><GithubOutlined /></a>
+
+                    <a href={decryptAES(othersInfo.github, othersInfo.key)}
+                       target="_blank" rel="noopener noreferrer" style={{color: 'black'}}>
+                        <GithubOutlined/>
+                    </a>
                 </Flex>
             </Flex> : <>{t("selectAnImage")}</>
     )

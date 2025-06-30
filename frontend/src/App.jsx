@@ -14,6 +14,7 @@ import {
     loadWithDefaults
 } from "./components/utils.jsx";
 import i18n from "i18next";
+import ControlImView from "./components/ControlImView.jsx";
 
 
 const {Header, Footer, Sider, Content} = Layout;
@@ -23,11 +24,14 @@ export default function Main(key) {
     const [selectedImage, setSelectedImage] = useState(null);
     const [mockImageList, setMockImageList] = useState([])
     const [refreshKey, setRefreshKey] = useState(0);// 一些组件延迟渲染,用于强制刷新组件
-
-
     const [showSetting, setShowSetting] = useState(false);
     const [currentProjConf, setCurrentProjConf] = useState(() => {
         return loadWithDefaults('currentProjConf', defaultProjConf);
+    })
+
+    const [imViewConfig, setImViewConfig] = useState({
+        rotateDeg: 0,
+        rotateLock: false
     })
 
     const [settingConfig, setSettingConfig] = useState(() => {
@@ -76,13 +80,20 @@ export default function Main(key) {
             />
             <Header className="custom-fixed-header">
                 <Flex justify="space-between" align="center" style={{width: '100%'}}>
-                    <HeaderLoad
-                        SetImageList={setMockImageList}
-                        mockImageList={mockImageList}
-                        settingConfig={settingConfig}
-                        currentProjConf={currentProjConf}
-                        setCurrentProjConf={setCurrentProjConf}
-                    />
+                    <Flex gap={"large"}>
+                        <HeaderLoad
+                            SetImageList={setMockImageList}
+                            mockImageList={mockImageList}
+                            settingConfig={settingConfig}
+                            currentProjConf={currentProjConf}
+                            setCurrentProjConf={setCurrentProjConf}
+                        />
+                        <ControlImView
+                            imViewConfig={imViewConfig}
+                            setImViewConfig={setImViewConfig}
+                            selectedImage={selectedImage}
+                        />
+                    </Flex>
                     <Button icon={<SettingFilled/>} onClick={() => setShowSetting(!showSetting)}/>
                 </Flex>
             </Header>
@@ -109,6 +120,7 @@ export default function Main(key) {
                             refreshKey={refreshKey}
                             setRefreshKey={setRefreshKey}
                             settingConfig={settingConfig}
+                            imViewConfig={imViewConfig}
                         />
                         <TagControlPanel
                             selectedImage={selectedImage}
