@@ -3,8 +3,7 @@ FROM node:20.19.0-alpine AS frontend-builder
 WORKDIR /app/frontend
 COPY frontend/package.json frontend/yarn.lock* ./
 RUN yarn install
-COPY frontend/public ./public
-COPY frontend/src ./src
+COPY frontend/  /app/frontend/
 RUN yarn build
 
 # 构建后端
