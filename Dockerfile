@@ -11,6 +11,11 @@ COPY frontend/ ./
 # 安装依赖并构建
 RUN yarn install && yarn build
 
+# 删除除 dist 目录外的所有文件
+RUN find . -type f ! -name 'dist' -delete && \
+    find . -type d ! -name 'dist' -empty -delete
+
+
 # 第二阶段：使用 uv 构建 Python 镜像
 FROM python:3.10-slim AS backend
 
