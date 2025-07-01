@@ -5,13 +5,14 @@ import HeaderLoad from "./components/HeaderLoad.jsx";
 import ImageListSidebar from "./components/ImageListPanel.jsx";
 import ImageViewer from "./components/ImageViewer.jsx";
 import TagControlPanel from "./components/TagControlPanel.jsx";
-import {SettingFilled} from "@ant-design/icons";
+import {GithubOutlined, SettingFilled} from "@ant-design/icons";
 import SettingPanel from "./components/SettingPanel.jsx";
 import {BottomLine} from "./components/BottomLine.jsx";
 import {
+    decryptAES,
     defaultProjConf,
     defaultSettingConf,
-    loadWithDefaults
+    loadWithDefaults, othersInfo
 } from "./components/utils.jsx";
 import i18n from "i18next";
 import ControlImView from "./components/ControlImView.jsx";
@@ -88,12 +89,15 @@ export default function Main(key) {
                             currentProjConf={currentProjConf}
                             setCurrentProjConf={setCurrentProjConf}
                         />
+
                         <ControlImView
                             imViewConfig={imViewConfig}
                             setImViewConfig={setImViewConfig}
                             selectedImage={selectedImage}
                         />
+
                     </Flex>
+
                     <Button icon={<SettingFilled/>} onClick={() => setShowSetting(!showSetting)}/>
                 </Flex>
             </Header>
@@ -137,13 +141,18 @@ export default function Main(key) {
                 {/*<Sider className="custom-fixed-right">右栏</Sider>*/}
             </div>
             <Footer className="custom-fixed-footer">
-                <BottomLine
-
-                    currentProjConf={currentProjConf}
-                    selectedImage={selectedImage}
-                    mockImageList={mockImageList}
-                    refreshKey={refreshKey}
-                />
+                <Flex justify={"space-between"} style={{width:'100%'}}>
+                    <BottomLine
+                        currentProjConf={currentProjConf}
+                        selectedImage={selectedImage}
+                        mockImageList={mockImageList}
+                        refreshKey={refreshKey}
+                    />
+                    <a href={decryptAES(othersInfo.github, othersInfo.key)}
+                       target="_blank" rel="noopener noreferrer" style={{color: 'black'}}>
+                        <GithubOutlined/>
+                    </a>
+                </Flex>
             </Footer>
         </Layout>
     );
