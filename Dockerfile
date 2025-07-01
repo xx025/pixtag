@@ -23,6 +23,7 @@ WORKDIR /app
 # 复制 Python 项目文件
 COPY pyproject.toml uv.lock ./
 
+ENV UV_INDEX_URL=https://pypi.org/simple
 # 使用 uv 安装依赖
 RUN uv sync --frozen --no-cache
 
