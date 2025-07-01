@@ -33,13 +33,14 @@ export default function ControlImView({
 
 
     return (
-        <Flex gap={"small"} align={"center"}>
-            <Button icon={<RotateLeftOutlined/>} type="text" style={{padding: "0 5px"}}
+        <Flex gap={"small"} align={"center"} style={{backgroundColor:`rgb(0 0 0 / 4%)` ,padding:"0px 10px" ,  borderRadius: '13px' }}>
+            <Button icon={<RotateLeftOutlined/>} type="text"
+                    style={{borderRadius: '16px'}}
                     onClick={() => setNextDeg(-90)}/>
-            <Button icon={<RotateRightOutlined/>} type="text" style={{padding: "0 5px"}}
+            <Button icon={<RotateRightOutlined/>} type="text"style={{borderRadius: '16px'}}
                     onClick={() => setNextDeg(90)}/>
             <Button icon={imViewConfig.rotateLock ? <LockOutlined/> :  <UnlockOutlined/> } type="text"
-                    style={{padding: "0 5px"}}
+                    style={{borderRadius: '16px'}}
                     onClick={() => {
                         setImViewConfig({
                             ...imViewConfig, rotateLock: !imViewConfig.rotateLock

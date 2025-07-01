@@ -3,10 +3,10 @@ services:
     image: ghcr.io/xx025/snapsort:latest
     container_name: snapsort-app
     ports:
-      - "9988:9989"
+      - "127.0.0.1:9989:9989"
     volumes:
       - ./data:/app/data
-#      - ./images:/app/images
+      #- ./images:/images
       # - /mnt:/mnt 
     environment:
       - PYTHONUNBUFFERED=1

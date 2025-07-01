@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import 'react-image-lightbox/style.css';
 import urlJoin from "url-join";
 import {useTranslation} from "react-i18next";
-import {Flex} from "antd";
+import {Flex, Image} from "antd";
 
 
 function RotatableImage({settingConfig, imViewConfig, selectedImage}) {
@@ -13,6 +13,9 @@ function RotatableImage({settingConfig, imViewConfig, selectedImage}) {
     const containerRef = useRef(null);
 
     const imageRef = useRef(null);
+
+
+    const [visible, setVisible] = useState(false);
 
     const updateImageSize = () => {
         const img = imageRef.current;
@@ -28,7 +31,8 @@ function RotatableImage({settingConfig, imViewConfig, selectedImage}) {
         const cw = container.clientWidth;
         const ch = container.clientHeight;
 
-        console.log(rotated,displaySize)
+        const cwpx = `${cw}px`;
+        const chpx = `${ch}px`;
         if (!rotated) {
             if (iw / ih > cw / ch) {
                 setDisplaySize({
@@ -38,14 +42,16 @@ function RotatableImage({settingConfig, imViewConfig, selectedImage}) {
             } else {
                 setDisplaySize({
                     width: 'auto',
-                    height: 'height',
+                    height: '100%',
                 })
             }
         } else {
-            // setDisplaySize({
-            //     width:
-            //     height:
-            // })
+            setDisplaySize({
+                width: chpx,
+                maxWidth: chpx,
+                maxHeight: cwpx,
+                height: "auto"
+            })
         }
 
     };
@@ -57,7 +63,22 @@ function RotatableImage({settingConfig, imViewConfig, selectedImage}) {
     return (
         <Flex style={{height: "90%", maxHeight: "90%", width: "100%", maxWidth: "100%"}} align={"center"}
               justify={"center"} ref={containerRef}>
+
+            <Image
+                style={{display: 'none'}}
+                preview={{
+                    visible,
+                    src: urlJoin(settingConfig.backendUrl, selectedImage.url || selectedImage.path),
+                    onVisibleChange: value => {
+                        setVisible(value);
+                    },
+                }}
+            />
             <img
+
+                onClick={() => {
+                    setVisible(true)
+                }}
                 ref={imageRef}
                 src={urlJoin(settingConfig.backendUrl, selectedImage.url || selectedImage.path)}
                 alt={selectedImage.description || selectedImage.path}
