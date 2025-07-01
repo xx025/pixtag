@@ -7,8 +7,9 @@ RUN yarn build
 FROM python:3.10-slim AS backend
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
 WORKDIR /app
-COPY pyproject.toml uv.lock ./
-COPY backend app.py ./
+COPY backend/  /app/backend/
+COPY uv.lock pyproject.toml /app/
+COPY app.py /app/
 RUN uv sync
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 EXPOSE 9989
