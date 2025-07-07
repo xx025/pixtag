@@ -72,10 +72,16 @@ function RotatableImage({settingConfig, imViewConfig, selectedImage}) {
                     onVisibleChange: value => {
                         setVisible(value);
                     },
+                    imageRender: (x) => {
+                        const newStyle = {
+                            ...(x.props.style || {}),
+                            transform: `rotate(${imViewConfig?.rotateDeg ?? 0}deg)`,
+                        };
+                        return React.cloneElement(x, { style: newStyle });
+                    }
                 }}
             />
             <img
-
                 onClick={() => {
                     setVisible(true)
                 }}
