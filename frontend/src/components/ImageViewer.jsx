@@ -71,14 +71,14 @@ function RotatableImage({settingConfig, imViewConfig, selectedImage}) {
                     src: urlJoin(settingConfig.backendUrl, selectedImage.url || selectedImage.path),
                     onVisibleChange: value => {
                         setVisible(value);
-                    },
-                    imageRender: (x) => {
-                        const newStyle = {
-                            ...(x.props.style || {}),
-                            transform: `rotate(${imViewConfig?.rotateDeg ?? 0}deg)`,
-                        };
-                        return React.cloneElement(x, { style: newStyle });
                     }
+                    // imageRender: (x) => {
+                    //     const newStyle = {
+                    //         ...(x.props.style || {}),
+                    //         transform: `rotate(${imViewConfig?.rotateDeg ?? 0}deg)`,
+                    //     };
+                    //     return React.cloneElement(x, { style: newStyle });
+                    // }
                 }}
             />
             <img
