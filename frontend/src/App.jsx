@@ -16,6 +16,7 @@ import {
 } from "./components/utils.jsx";
 import i18n from "i18next";
 import ControlImView from "./components/ControlImView.jsx";
+import {useTranslation} from "react-i18next";
 
 
 const {Header, Footer, Sider, Content} = Layout;
@@ -29,6 +30,12 @@ export default function Main(key) {
     const [currentProjConf, setCurrentProjConf] = useState(() => {
         return loadWithDefaults('currentProjConf', defaultProjConf);
     })
+
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        document.title = t("appName"); // 动态更新网页标题
+    }, [i18n.language, t]);
 
     const [imViewConfig, setImViewConfig] = useState({
         rotateDeg: 0,

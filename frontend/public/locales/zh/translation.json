@@ -1,4 +1,6 @@
 {
+
+  "appName": "归影",
   "selectAnImage": "请选择一张图片",
   "imagePath": "图片路径",
   "actualSize": "实际宽高",
