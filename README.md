@@ -1,38 +1,19 @@
 ![img.png](frontend/img.png)
 
-# SnapSort
+# PixTag|归影
 
-> Quickly categorize images with simple hotkeys—automatic paging, real-time stats, and fast filtering for seamless workflow.
-
-## Usage
-
-
-
-## 1. use docker compose
-
-```
-git clone https://github.com/xx025/SnapSort.git
-cd SnapSort
-docker compose up -d
-```
-
-
-
-## 2. use source code
-```
-git clone https://github.com/xx025/SnapSort.git
-cd SnapSort
-uv sync
-cd frontend
-yarn install
-yarn build
-cd ..
-uv run app.py
-```
+> Organize your images fast, and categorize them with ease.
+> 
+> 快速整理你的图片，让分类变得轻而易举。
 
 
 
 
+##  Demo | 演示
+
+<video width="640" height="360" controls>
+  <source src="https://github.com/xx025/pixtag/releases/download/0.0.1/2025-08-17.11-25-10.mp4" type="video/mp4">
+</video>
 
 
 
