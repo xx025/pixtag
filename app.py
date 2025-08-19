@@ -1,3 +1,5 @@
+import os
+import sys
 import webbrowser
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -8,13 +10,13 @@ from starlette.responses import FileResponse
 
 from backend.api import router as api_router
 
-host = "0.0.0.0"
+host = os.environ.get("HOST", "127.0.0.1")
 port = 9989
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    webbrowser.open(f"http://{host}:{port}/", new=2)
+    # webbrowser.open(f"http://{host}:{port}/", new=2)
     yield
 
 
@@ -30,7 +32,22 @@ app.add_middleware(
 )
 
 app.include_router(api_router, prefix="/api", tags=["api"])
-build_dir = Path("frontend/dist")
+
+
+def resource_path(relative: str) -> Path:
+    """
+    获取打包后的资源路径
+    - 开发模式：相对 run.py 所在目录
+    - Nuitka 打包模式：exe 解压目录
+    """
+    if getattr(sys, "frozen", False):  # Nuitka 打包后会设置 sys.frozen
+        base_path = Path(sys._MEIPASS) if hasattr(sys, "_MEIPASS") else Path(sys.executable).parent
+    else:
+        base_path = Path(__file__).parent
+    return base_path / relative
+
+
+build_dir = resource_path("frontend/dist")
 
 
 @app.get("/{full_path:path}")
