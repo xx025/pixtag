@@ -1,10 +1,8 @@
-name: Build and Release
+name: Build & Release
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -12,42 +10,37 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest] # macos-latest 也能加
+        os: [windows-2022, ubuntu-latest]
 
     steps:
       - uses: actions/checkout@v3
 
-      # -----------------------
-      # 前端构建
-      # -----------------------
+      # ---- 前端构建 ----
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      - name: Install frontend deps
-        working-directory: frontend
-        run: yarn install --frozen-lockfile
-
       - name: Build frontend
-        working-directory: frontend
-        run: yarn build
+        run: |
+          cd frontend
+          yarn install --frozen-lockfile
+          yarn build
 
-      # -----------------------
-      # 后端构建
-      # -----------------------
-      - name: Install uv
-        run: pip install uv
+      # ---- 后端依赖 ----
+      - name: Setup Python & uv
+        run: |
+          pip install uv
+          uv sync --all-extras --dev
 
-      - name: Sync dependencies
-        run: uv sync --all-extras --dev
-
-      - name: Extract version from pyproject.toml
+      # ---- 读取版本号 ----
+      - name: Extract version
         id: get_version
         run: |
           VERSION=$(grep -Po '(?<=^version = ")[^"]*' pyproject.toml)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
+      # ---- Nuitka 打包 ----
       - name: Build with Nuitka
         run: |
           if [ "${{ runner.os }}" == "Windows" ]; then
@@ -60,18 +53,18 @@ jobs:
             uv run nuitka --standalone --onefile \
               --include-data-dir=frontend/dist=frontend/dist \
               run.py
-          fi
 
+      # ---- 重命名产物 ----
       - name: Rename artifact
         run: |
           if [ "${{ runner.os }}" == "Windows" ]; then
             mv run.exe run-${{ steps.get_version.outputs.version }}-windows.exe
           else
             mv run run-${{ steps.get_version.outputs.version }}-linux
-          fi
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+      # ---- 上传 artifact ----
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
           name: build-${{ runner.os }}
           path: run-*
@@ -80,12 +73,12 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v3
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
         with:
           path: ./dist
 
-      - name: Get version again
+      - name: Get version
         id: get_version
         run: |
           VERSION=$(grep -Po '(?<=^version = ")[^"]*' pyproject.toml)
@@ -96,8 +89,6 @@ jobs:
         with:
           tag_name: v${{ steps.get_version.outputs.version }}
           name: v${{ steps.get_version.outputs.version }}
-          draft: false
-          prerelease: false
           files: ./dist/*/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
