@@ -5,17 +5,15 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# ---- 构建前端，只构建一次 ----
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-2022, ubuntu-latest]
-
+  frontend:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend-path: frontend/dist
     steps:
       - uses: actions/checkout@v3
 
-      # ---- 前端构建 ----
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -27,53 +25,99 @@ jobs:
           yarn install --frozen-lockfile
           yarn build
 
-      # ---- 后端依赖 ----
+      - name: Upload frontend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist
+
+# ---- 后端 Windows 打包 ----
+  backend-windows:
+    needs: frontend
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download frontend
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist
+
       - name: Setup Python & uv
         run: |
           pip install uv
           uv sync --all-extras --dev
 
-      # ---- 读取版本号 ----
       - name: Extract version
-        id: get_version
+        id: get_version_win
+        run: |
+          $version = Select-String -Path pyproject.toml -Pattern 'version = "(.*)"' | ForEach-Object { $_.Matches[0].Groups[1].Value }
+          echo "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8
+
+      - name: Build with Nuitka
+        run: |
+          uv run nuitka --standalone --onefile ^
+            --include-data-dir=frontend/dist=frontend/dist ^
+            --windows-icon-from-ico=assets/app.ico ^
+            --windows-disable-console ^
+            run.py
+
+      - name: Rename artifact
+        run: ren run.exe run-${{ steps.get_version_win.outputs.version }}-windows.exe
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-windows
+          path: run-*
+
+# ---- 后端 Linux 打包 ----
+  backend-linux:
+    needs: frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download frontend
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist
+
+      - name: Setup Python & uv
+        run: |
+          pip install uv
+          uv sync --all-extras --dev
+
+      - name: Extract version
+        id: get_version_linux
         run: |
           VERSION=$(grep -Po '(?<=^version = ")[^"]*' pyproject.toml)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      # ---- Nuitka 打包 ----
       - name: Build with Nuitka
         run: |
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            uv run nuitka --standalone --onefile ^
-              --include-data-dir=frontend/dist=frontend/dist ^
-              --windows-icon-from-ico=assets/app.ico ^
-              --windows-disable-console ^
-              run.py
-          else
-            uv run nuitka --standalone --onefile \
-              --include-data-dir=frontend/dist=frontend/dist \
-              run.py
+          uv run nuitka --standalone --onefile \
+            --include-data-dir=frontend/dist=frontend/dist \
+            run.py
 
-      # ---- 重命名产物 ----
       - name: Rename artifact
         run: |
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            mv run.exe run-${{ steps.get_version.outputs.version }}-windows.exe
-          else
-            mv run run-${{ steps.get_version.outputs.version }}-linux
+          mv run run-${{ steps.get_version_linux.outputs.version }}-linux
 
-      # ---- 上传 artifact ----
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ runner.os }}
+          name: backend-linux
           path: run-*
 
+# ---- Release ----
   release:
-    needs: build
+    needs: [backend-windows, backend-linux]
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifacts
+      - name: Download backend artifacts
         uses: actions/download-artifact@v4
         with:
           path: ./dist
