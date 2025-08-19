@@ -71,7 +71,7 @@ jobs:
 # ---- 后端 Linux 打包 ----
   backend-linux:
     needs: frontend
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04  # 这里将 ubuntu-latest 改成 ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
 
