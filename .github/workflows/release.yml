@@ -56,7 +56,7 @@ jobs:
           echo "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8
 
       - name: Build Windows executable
-        run: uv run nuitka --standalone --onefile --include-data-dir=frontend/dist=frontend/dist --windows-disable-console --output-filename=run --enable-plugin=auto_download_dependencies run.py
+        run: uv run nuitka --standalone --onefile --include-data-dir=frontend/dist=frontend/dist --windows-disable-console --output-filename=run run.py
         shell: pwsh
 
       - name: Rename artifact
