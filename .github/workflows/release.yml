@@ -55,13 +55,9 @@ jobs:
           $version = Select-String -Path pyproject.toml -Pattern 'version = "(.*)"' | ForEach-Object { $_.Matches[0].Groups[1].Value }
           echo "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8
 
-      - name: Build with Nuitka
-        run: |
-          uv run nuitka --standalone --onefile ^
-            --include-data-dir=frontend/dist=frontend/dist ^
-            --windows-icon-from-ico=assets/app.ico ^
-            --windows-disable-console ^
-            run.py
+      - name: Build Windows executable
+        run: uv run nuitka --standalone --onefile --include-data-dir=frontend/dist=frontend/dist --windows-disable-console --output-filename=run run.py
+        shell: pwsh
 
       - name: Rename artifact
         run: ren run.exe run-${{ steps.get_version_win.outputs.version }}-windows.exe
@@ -96,11 +92,8 @@ jobs:
           VERSION=$(grep -Po '(?<=^version = ")[^"]*' pyproject.toml)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Build with Nuitka
-        run: |
-          uv run nuitka --standalone --onefile \
-            --include-data-dir=frontend/dist=frontend/dist \
-            run.py
+      - name: Build Linux executable
+        run: uv run nuitka --standalone --onefile --include-data-dir=frontend/dist=frontend/dist --output-filename=run run.py
 
       - name: Rename artifact
         run: |
