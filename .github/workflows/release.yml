@@ -99,6 +99,17 @@ jobs:
           VERSION=$(grep -Po '(?<=^version = ")[^"]*' pyproject.toml)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
+      - name: Install GTK + GObject deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgtk-3-dev \
+            gir1.2-gtk-3.0 \
+            gobject-introspection \
+            libgirepository1.0-dev \
+            pkg-config \
+            libcairo2-dev
+
       - name: Build Linux executable
         run: |
           uv add "pywebview[gtk]"
