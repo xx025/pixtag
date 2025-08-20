@@ -127,5 +127,3 @@ jobs:
           tag_name: v${{ needs.backend-linux.outputs.version }}
           name: v${{ needs.backend-linux.outputs.version }}
           files: ./dist/*/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
