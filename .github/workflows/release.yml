@@ -5,6 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+  # 👈 必须加这一行，允许 GITHUB_TOKEN 创建/更新 Release
+
 # ---- 构建前端，只构建一次 ----
 jobs:
   frontend:
@@ -71,7 +75,7 @@ jobs:
 # ---- 后端 Linux 打包 ----
   backend-linux:
     needs: frontend
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     # 这里将 ubuntu-latest 改成 ubuntu-20.04
     outputs:
       version: ${{ steps.get_version_linux.outputs.version }}   # ✅ 关键
