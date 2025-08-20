@@ -101,7 +101,6 @@ jobs:
 
       - name: Build Linux executable
         run: |
-          sudo apt-get install -y libgtk-3-dev gir1.2-gtk-3.0
           uv add "pywebview[gtk]"
           uv run nuitka --standalone --onefile --include-data-dir=frontend/dist=frontend/dist --output-filename=run run.py
 
