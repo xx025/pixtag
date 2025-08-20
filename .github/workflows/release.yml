@@ -75,7 +75,7 @@ jobs:
 # ---- 后端 Linux 打包 ----
   backend-linux:
     needs: frontend
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     # 这里将 ubuntu-latest 改成 ubuntu-20.04
     outputs:
       version: ${{ steps.get_version_linux.outputs.version }}   # ✅ 关键
