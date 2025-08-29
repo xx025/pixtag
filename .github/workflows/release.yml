@@ -113,7 +113,7 @@ jobs:
       - name: Build Linux executable
         run: |
           uv add "pywebview[gtk]"
-          uv run nuitka --standalone --onefile --include-data-dir=frontend/dist=frontend/dist --output-filename=run run.py
+          uv run nuitka --standalone --onefile --include-data-dir=frontend/dist=frontend/dist --output-filename=run app.py
 
       - name: Rename artifact
         run: |
