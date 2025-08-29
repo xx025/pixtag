@@ -93,6 +93,7 @@ function RotatableImage({settingConfig, imViewConfig, selectedImage}) {
                     transform: `rotate(${imViewConfig?.rotateDeg ?? 0}deg)`,
                     transformOrigin: 'center center',
                     transition: 'transform 0.3s ease-in-out',
+                    maxWidth:"100%",
                     ...displaySize,
                 }}
             />

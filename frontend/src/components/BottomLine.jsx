@@ -50,7 +50,7 @@ export function BottomLine({currentProjConf, selectedImage, mockImageList, refre
                 <Flex direction="horizontal" align="center" gap="small">
                     <span> [ {selectedImage.id} / {mockImageList.length} ]</span>
 
-                    <span>{t("imagePath")}: {selectedImage.path || selectedImage.url}</span>
+                    {/*<span>{t("imagePath")}: {selectedImage.path || selectedImage.url}</span>*/}
                     {/*<span style={{width: 150,wrap:false}}> {t("actualSize")}: {sizeText} </span>*/}
                 </Flex>
                 <Flex direction="horizontal" align="center" gap="small">
